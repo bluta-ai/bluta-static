@@ -3,8 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Blutech.io — BLUTA | Connect • See • Automate</title>
+  <title>Blutech.io — bluta | Connect • See • Automate</title>
   <meta name="description" content="BLUTA by Blutech.io — Building OS + Hardware to reduce labour, operating and energy costs. Multi‑page dark site." />
+  <link rel="canonical" href="https://bluta.ai/" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="bluta — Building OS" />
+  <meta property="og:description" content="Unify CCTV, HVAC, lifts, access & IoT. Automate with privacy‑first AI to cut labour, operating and energy costs." />
+  <meta property="og:url" content="https://bluta.ai/" />
+  <meta property="og:image" content="/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/favicon.ico" />
+  <!-- Free rounded wordmark font (Bauhaus‑like) for searchable logo -->
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+@font-face{
+  font-family:'Bauhaus 93 Web';
+  src: local('Bauhaus 93'); /* Uses OS-installed font if available */
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+</style>
+
   <style>
     :root{
       --bg:#0b1020;        /* deep navy */
@@ -12,7 +33,7 @@
       --ink:#e5e7eb;       /* text */
       --muted:#9aa3b2;     /* secondary text */
       --line:#1f2a44;      /* borders */
-      --brand:#60a5fa;     /* accent */
+      --brand:#00C3D8;     /* official bluta blue */
       --brand2:#a78bfa;    /* accent 2 */
       --nav-h:72px;
     }
@@ -23,18 +44,29 @@
     .container{max-width:1200px;margin:0 auto;padding:0 20px}
     .nav{position:sticky;top:0;z-index:50;height:var(--nav-h);backdrop-filter:saturate(1.2) blur(8px);background:rgba(10,14,28,.7);border-bottom:1px solid var(--line)}
     .nav-inner{display:flex;gap:16px;align-items:center;justify-content:space-between;height:100%}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:800}
-    .brand img{height:34px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.45))}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:800;font-family:'Bauhaus 93 Web','Comfortaa', ui-sans-serif, system-ui}
+    .brand .wordmark{font-weight:800;font-size:26px;letter-spacing:.2px;text-transform:lowercase}
+    /* Split-color wordmark: blu=brand blue, ta=white (dark) / black (light) */
+    .wordmark .blu{color:var(--brand)}
+    .wordmark .ta{color:#fff}
+    .on-light .wordmark .ta{color:#000}
     .nav-links a{display:inline-block;padding:10px 12px;border-radius:10px;font-weight:700;color:#dbe3f3}
     .nav-links a:hover{background:rgba(255,255,255,.06)}
     section{padding:64px 0}
-    .hero{padding-top:16px;background:radial-gradient(800px 300px at 30% 0%,rgba(99,102,241,.25),transparent),radial-gradient(900px 340px at 80% 10%,rgba(96,165,250,.2),transparent)}
+    .hero{position:relative;padding:0;min-height:calc(68vh + var(--nav-h));}
+.hero-media{position:absolute;inset:0;overflow:hidden}
+.hero-media img{width:100%;height:100%;object-fit:cover;transform:scale(1.02)}
+.hero-overlay{position:relative;z-index:1;display:flex;align-items:flex-end;min-height:calc(68vh + var(--nav-h));
+  background:linear-gradient(180deg,rgba(5,8,20,.15) 0%, rgba(11,16,32,.55) 40%, rgba(11,16,32,.80) 100%)}
+.hero-overlay .content{padding:64px 0}
+@media(max-width:980px){.hero-overlay{align-items:center}.hero-overlay .content{padding:40px 0}}
+
     .grid{display:grid;gap:20px}
     .col-2{grid-template-columns:1fr 1fr}
     .col-3{grid-template-columns:repeat(3,1fr)}
     .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
     .p-6{padding:18px}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;font-weight:800;border:1px solid var(--line);background:rgba(255,255,255,.04)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;font-weight:800;border:1px solid var(--line);background:rgba(255,255,255,.04);cursor:pointer}
     .btn.primary{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#0b1020;border-color:transparent}
     .subtitle{color:var(--muted);font-size:18px}
     .title-xl{font-size:clamp(28px,3.6vw,48px);line-height:1.1;margin:10px 0}
@@ -54,7 +86,7 @@
     @media(max-width:980px){.col-2,.col-3{grid-template-columns:1fr}}
   </style>
   <script>
-    // tiny hash router (hardened)
+    // tiny hash router
     window.__route = function(){
       var h = (location.hash||'').replace(/^#\/?/, '').trim();
       return (h ? h : 'home').toLowerCase();
@@ -68,9 +100,9 @@
 <body>
   <div id="root"></div>
 
-  <!-- React via CDN -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <!-- React via CDN (production) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <script type="text/babel">
@@ -78,22 +110,19 @@
     const BLUTA_BADGE = "data:image/svg+xml;utf8,\
       <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 28'>\
       <rect width='120' height='28' rx='6' fill='%23121a2e'/>\
-      <text x='10' y='19' font-family='ui-sans-serif, Arial' font-weight='900' font-size='14' fill='%2360a5fa'>BLUTA</text>\
+      <text x='10' y='19' font-family='ui-sans-serif, Arial' font-weight='900' font-size='14' fill='%2300C3D8'>bluta</text>\
       </svg>";
-
-    // Logo loader: will persist your uploaded logo in localStorage so it shows reliably in canvas
-    const getStoredLogo = () => localStorage.getItem('blutech_logo_data') || '';
 
     const NetImage = ({ src, alt, className }) => {
       const [err,setErr] = React.useState(false);
       if(err) return (
         <svg viewBox="0 0 800 600" className={className} role="img" aria-label={alt} preserveAspectRatio="xMidYMid slice">
-          <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stopColor="#60a5fa"/><stop offset="1" stopColor="#a78bfa"/></linearGradient></defs>
+          <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stopColor="#00C3D8"/><stop offset="1" stopColor="#a78bfa"/></linearGradient></defs>
           <rect width="800" height="600" fill="url(#g)"/>
           <text x="50%" y="92%" textAnchor="middle" fill="#0b1020" fontSize="16" fontFamily="ui-sans-serif">Preview image</text>
         </svg>
       );
-      return <img src={src} alt={alt} className={className} onError={()=>setErr(true)} />
+      return <img src={src} alt={alt} className={className} loading="lazy" decoding="async" fetchpriority="low" onError={()=>setErr(true)} />
     };
 
     function useHashRoute(){
@@ -106,21 +135,24 @@
       return route;
     }
 
-    /** UI **/
-    const Nav = ({logo, onPickLogo}) => (
+    /** Small UI atoms **/
+    const Nav = () => (
       <div className="nav">
         <div className="container nav-inner">
           <a href="#/home" className="brand">
-            {logo ? <img src={logo} alt="Blutech.io"/> : <span style={{fontWeight:900,letterSpacing:.4}}>blutech.io</span>}
-          </a>
-          <div className="nav-links">
+  <span className="wordmark" aria-label="bluta">
+    <span className="blu">blu</span><span className="ta">ta</span>
+  </span>
+</a>          <div className="nav-links">
             <a href="#/home">Home</a>
             <a href="#/solutions">Solutions</a>
+            <a href="#/hardware">Hardware</a>
             <a href="#/platform">Platform</a>
             <a href="#/cctv">AI CCTV</a>
             <a href="#/esg">ESG</a>
             <a href="#/partners">Integrations</a>
             <a href="#/advantages">Advantages</a>
+            <a href="#/projects">Projects</a>
             <a href="#/contact">Contact</a>
           </div>
         </div>
@@ -158,15 +190,18 @@
       </div>
     );
 
-    const DeviceCard = ({title,img,children,specs})=> (
-      <div className="card" style={{overflow:'hidden'}}>
-        <div className="image" style={{height:180}}><NetImage src={img} alt={title}/></div>
+    const DeviceCard = ({title,img,children,specs,badge})=> (
+      <div className="card" style={{overflow:'hidden', position:'relative'}}>
+        {badge && <div style={{position:'absolute',right:8,top:8}} className="pill">{badge}</div>}
+        <div className="image" style={{height:160}}>
+          <NetImage src={img} alt={title}/>
+        </div>
         <div className="p-6">
-          <div style={{fontWeight:800,fontSize:18}}>{title}</div>
-          <div className="muted" style={{marginTop:8}}>{children}</div>
-          {specs && (
+          <div style={{fontWeight:800}}>{title}</div>
+          <div className="muted" style={{marginTop:6}}>{children}</div>
+          {Array.isArray(specs) && specs.length>0 && (
             <table className="specs"><tbody>
-              {specs.map((row,i)=> <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>)}
+              {specs.map((row,i)=>(<tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>))}
             </tbody></table>
           )}
         </div>
@@ -179,38 +214,41 @@
       const [staff,setStaff] = React.useState(8);
       const [energy,setEnergy] = React.useState(500000);
       const savings = React.useMemo(()=>{
-        const labour = staff*12*3000*0.35; // 35% labour efficiency mid‑point
-        const energySave = energy*0.17;    // 17% energy mid‑point
+        const labour = staff*12*3000*0.35; // 35% labour efficiency midpoint
+        const energySave = energy*0.17;    // 17% energy midpoint
         return {labour:Math.round(labour), energy:Math.round(energySave), total:Math.round(labour+energySave)};
       },[staff,energy]);
 
       return (
         <>
           {/* HERO */}
-          <section className="hero">
-            <div className="container">
-              <div className="grid col-2" style={{alignItems:'center'}}>
-                <div>
-                  <span className="pill"><img src={BLUTA_BADGE} alt="BLUTA" style={{height:14,borderRadius:3}}/> BLUTA • Building OS</span>
-                  <h1 className="title-xl">Cut Costs. Automate with AI. <br/>One Platform for Smart Buildings.</h1>
-                  <p className="subtitle">Unify CCTV, HVAC, lifts, access and IoT—then automate with privacy‑first AI to cut labour, operating and energy costs.</p>
-                  <div style={{marginTop:16,display:'flex',gap:10,flexWrap:'wrap'}}>
-                    <a className="btn primary" href="#/solutions">See Solutions →</a>
-                    <a className="btn" href="#/platform">How it works</a>
-                  </div>
-                  <div className="grid col-2" style={{marginTop:20}}>
-                    <StatCard img="https://images.unsplash.com/photo-1524758870432-af57e54afa6f?q=80&w=500&auto=format&fit=crop" value="30–50%" label="Labour efficiency"/>
-                    <StatCard img="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=500&auto=format&fit=crop" value="15–20%" label="Energy savings"/>
-                    <StatCard img="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=500&auto=format&fit=crop" value=">100" label="Deployments across APAC"/>
-                    <StatCard img="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=500&auto=format&fit=crop" value="Privacy‑first" label="No personal identifiers"/>
-                  </div>
-                </div>
-                <div className="image" style={{height:360}}>
-                  <NetImage src="https://images.unsplash.com/photo-1482192505345-5655af888cc4?q=80&w=1600&auto=format&fit=crop" alt="Command center"/>
-                </div>
-              </div>
-            </div>
-          </section>
+         <section className="hero">
+  <div className="hero-media">
+  <NetImage src="/bluta-hero.png" alt="BLUTA — Building OS hero image"/>
+</div>
+  <div className="hero-overlay">
+    <div className="container content">
+      <div style={{maxWidth:800}}>
+        <span className="pill">
+          <span className="wordmark" aria-label="bluta"><span className="blu">blu</span><span className="ta">ta</span></span> • building os
+        </span>
+        <h1 className="title-xl">Cut Costs. Automate with AI.<br/>One Platform for Smart Buildings.</h1>
+        <p className="subtitle">Unify CCTV, HVAC, lifts, access and IoT—then automate with privacy-first AI to cut labour, operating and energy costs.</p>
+        <div style={{marginTop:16,display:'flex',gap:10,flexWrap:'wrap'}}>
+          <a className="btn primary" href="#/solutions">See Solutions →</a>
+          <a className="btn" href="#/platform">How it works</a>
+        </div>
+        <div className="grid col-2" style={{marginTop:20}}>
+          <StatCard img="https://images.unsplash.com/photo-1524758870432-af57e54afa6f?q=80&w=500&auto=format&fit=crop" value="30–50%" label="Labour efficiency"/>
+          <StatCard img="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=500&auto=format&fit=crop" value="15–20%" label="Energy savings"/>
+          <StatCard img="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=500&auto=format&fit=crop" value=">100" label="Deployments across APAC"/>
+          <StatCard img="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=500&auto=format&fit=crop" value="Privacy-first" label="No personal identifiers"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
           {/* BLUTA CORE */}
           <section>
@@ -255,7 +293,7 @@
             </div>
           </section>
 
-          {/* HARDWARE PREVIEW */}
+          {/* HARDWARE PREVIEW (short) */}
           <section>
             <div className="container">
               <div className="h2">Hardware</div>
@@ -315,18 +353,18 @@
               <div className="grid col-2" style={{marginTop:12}}>
                 <div className="card p-6">
                   <div className="grid col-2">
-                    <label>Gross area (sq ft)
+                    <label>Gross area (sq ft
                       <input type="number" value={area} onChange={e=>setArea(Number(e.target.value||0))} style={{width:'100%',marginTop:6}} />
                     </label>
                     <label>Ops headcount
                       <input type="number" value={staff} onChange={e=>setStaff(Number(e.target.value||0))} style={{width:'100%',marginTop:6}} />
                     </label>
-                    <label style={{gridColumn:'1/-1'}}>Annual energy spend
+                    <label style={{gridColumn:'1/-1'}}>Annual energy spend (USD)
                       <input type="number" value={energy} onChange={e=>setEnergy(Number(e.target.value||0))} style={{width:'100%',marginTop:6}} />
                     </label>
                   </div>
                 </div>
-                <div className="card p-6" style={{background:'linear-gradient(135deg,#6366f1,#0ea5e9)', color:'white'}}>
+                <div className="card p-6" style={{background:'linear-gradient(135deg,#4f46e5,#00C3D8)', color:'white'}}>
                   <div className="grid col-3" style={{textAlign:'center'}}>
                     <div><div style={{fontWeight:800,fontSize:22}}>{savings.labour.toLocaleString()}</div><div>Labour / yr</div></div>
                     <div><div style={{fontWeight:800,fontSize:22}}>{savings.energy.toLocaleString()}</div><div>Energy / yr</div></div>
@@ -363,13 +401,11 @@
         <div className="container">
           <div className="h2">Solutions: Connect • See • Automate</div>
           <p className="muted">BLUTA is the smart building brain: integrate systems, turn data into insights, and automate action.</p>
-
           <div className="grid col-3" style={{marginTop:16}}>
             <Feature title="Connect" desc="HVAC, lighting, security, access control, cleaning, and energy systems unified. Broad sensor compatibility. Open protocols & APIs."/>
-            <Feature title="See" desc="IAQ & comfort tracking; energy analytics; occupancy & people‑flow; safety monitoring incl. fall/leak; AI CCTV intelligence."/>
+            <Feature title="See" desc="IAQ & comfort tracking; energy analytics; occupancy & people‑flow; safety monitoring incl. leak/fall; AI CCTV intelligence."/>
             <Feature title="Automate" desc="Rule‑based alerts; auto work orders & escalations; schedule optimization that learns occupancy patterns."/>
           </div>
-
           <div className="grid col-2" style={{marginTop:20}}>
             <div className="card p-6">
               <div style={{fontWeight:800,marginBottom:6}}>Industry Playbooks</div>
@@ -384,139 +420,71 @@
               <NetImage src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1600&auto=format&fit=crop" alt="Operations"/>
             </div>
           </div>
+        </div>
+      </section>
+    );
 
-          <div className="card p-6" style={{marginTop:20}}>
-            <div style={{fontWeight:800,marginBottom:6}}>Results You Can Measure</div>
-            <ul className="muted" style={{lineHeight:1.7}}>
-              <li>Lower OpEx without compromising comfort or safety.</li>
-              <li>Scalable across large portfolios with cloud, hybrid, or on‑prem deployment.</li>
-              <li>Evidence‑based reporting for ESG and stakeholders.</li>
-            </ul>
+    const Hardware = () => (
+      <section>
+        <div className="container">
+          <div className="h2">bluta hardware</div>
+          <p className="subtitle">Smart washroom solution • Water leakage sensor • IAQ sensor • Logic controller • Protocol converter • Heatmap series (heatmap, pro, fusion) • dormakaba IoT module • Smart thermostat • Dual protocol (bluetooth + LoRaWAN/4G)</p>
+          <div className="grid col-3" style={{marginTop:16}}>
+            {[
+              {t:'Smart washroom AIoT',i:'https://images.unsplash.com/photo-1600566753190-17f0baa2db2c?q=80&w=1200&auto=format&fit=crop',d:'Occupancy, cleaning triggers, supplies and service SLA'},
+              {t:'Water leakage sensor',i:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop',d:'Cable/spot sensors with instant alerts & shutdown'},
+              {t:'IAQ sensor',i:'https://images.unsplash.com/photo-1601655781320-480a1d5ed519?q=80&w=1200&auto=format&fit=crop',d:'CO₂, TVOC, PM2.5/10, temp & RH for comfort'},
+              {t:'Logic controller',i:'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop',d:'Rules at the edge; reliable automations'},
+              {t:'Protocol converter',i:'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop',d:'BACnet/Modbus/LonWorks to IP/LoRa'},
+              {t:'Heatmap series',i:'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop',d:'Heatmap, Pro, Fusion — people‑flow & queues'},
+              {t:'dormakaba IoT module',i:'https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?q=80&w=1200&auto=format&fit=crop',d:'Door state, usage, maintenance'},
+              {t:'Smart thermostat',i:'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=1200&auto=format&fit=crop',d:'Zoning, schedules and remote setpoints'},
+              {t:'Dual protocol comms',i:'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop',d:'Bluetooth + LoRaWAN/4G for robust sites'},
+            ].map((x,idx)=> (
+              <DeviceCard key={idx} title={x.t} img={x.i}>{x.d}</DeviceCard>
+            ))}
           </div>
         </div>
       </section>
     );
 
     const Platform = () => (
-      <section>
-        <div className="container">
-          <div className="h2">Platform: The Smart Building Brain</div>
-          <p className="muted">From ingestion to action — BLUTA’s MCP turns signals into decisions.</p>
-          <div className="grid col-3" style={{marginTop:16}}>
-            <Feature title="Data Ingestion" desc="Sensors, meters, utility bills, BMS, and third‑party platforms."/>
-            <Feature title="Normalization" desc="Standardized metadata & units for clean analytics."/>
-            <Feature title="Rule Engine" desc="Thresholds, patterns & interdependencies trigger actions."/>
-            <Feature title="Task Management" desc="Auto‑create, assign & escalate with notifications."/>
-            <Feature title="Retention" desc="Live trends & scheduled backups for compliance."/>
-          </div>
-
-          <div className="grid col-2" style={{marginTop:20}}>
-            <div className="card p-6">
-              <div style={{fontWeight:800,marginBottom:6}}>MCP Capabilities</div>
-              <ul className="muted" style={{lineHeight:1.7}}>
-                <li><b>Root‑Cause Explainer</b>: e.g., re‑open damper; temp normal in 7 min.</li>
-                <li><b>Auto Work‑Order Creator</b>: drafts WO with parts list (e.g., VFD bearing wear).</li>
-                <li><b>Ghost‑Asset Finder</b>: redeploy idle assets to cut wait times.</li>
-                <li><b>Cross‑Site Benchmarking</b>: spot energy outliers (kWh/ft², COP drift).</li>
-                <li><b>Predict‑&‑Prevent Safety</b>: context‑aware hazard warnings (e.g., slick lobby).</li>
-                <li><b>Tenant AI Chatbot</b>: answers “why warm?” with live cause & ETA.</li>
-              </ul>
-            </div>
-            <div className="image" style={{height:320}}>
-              <NetImage src="https://images.unsplash.com/photo-1538370965046-79c0d6907d47?q=80&w=1600&auto=format&fit=crop" alt="Platform MCP"/>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section><div className="container"><div className="h2">Platform</div><p className="subtitle">Connect • See • Automate — unified data model, rules engine and reports.</p></div></section>
     );
-
     const CCTV = () => (
-      <section>
-        <div className="container">
-          <div className="h2">AI‑Powered CCTV Monitoring</div>
-          <div className="grid col-2" style={{marginTop:12}}>
-            <div className="card p-6">
-              <ul className="muted" style={{lineHeight:1.8}}>
-                <li><b>Real‑time detections</b>: intrusion, tailgating, loitering, crowding/queue, slip/fall, smoke.</li>
-                <li><b>Occupancy & flow</b>: counts, heatmaps, dwell, unusual motion.</li>
-                <li><b>Anomaly & tamper</b>: camera offline, scene change, lens cover; auto‑failover.</li>
-                <li><b>Integrations</b>: ONVIF/RTSP VMS, access control, BMS, IoT alarms; export clips & timelines.</li>
-                <li><b>Performance</b>: &lt; 2s event latency*, 24/7 with 99.9% availability target.</li>
-              </ul>
-            </div>
-            <div className="image" style={{height:320}}>
-              <NetImage src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?q=80&w=1600&auto=format&fit=crop" alt="AI CCTV"/>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section><div className="container"><div className="h2">AI CCTV</div><p className="subtitle">Video analytics integrated with BLUTA workflows and privacy‑first policies.</p></div></section>
     );
-
     const ESG = () => (
-      <section>
-        <div className="container">
-          <div className="h2">ESG Compliance & Reporting</div>
-          <div className="grid col-2" style={{marginTop:12}}>
-            <div className="card p-6">
-              <ul className="muted" style={{lineHeight:1.8}}>
-                <li>Aggregate ESG data from disconnected systems into audit‑ready dashboards.</li>
-                <li>Support environmental, safety & transparency standards with evidence packs.</li>
-                <li>Maintain logs & reports for regulators and investors; portfolio‑level insights.</li>
-              </ul>
-            </div>
-            <div className="image" style={{height:320}}>
-              <NetImage src="https://images.unsplash.com/photo-1581092334020-1e7e622d7a4c?q=80&w=1600&auto=format&fit=crop" alt="ESG Reporting"/>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section><div className="container"><div className="h2">ESG</div><p className="subtitle">IAQ, comfort and energy KPIs to support reporting and audits.</p></div></section>
     );
-
     const Partners = () => (
-      <section>
-        <div className="container">
-          <div className="h2">Integrations & Partnerships</div>
-          <p className="muted">Out‑of‑the‑box integrations with access control, doors/turnstiles, HVAC and more.</p>
-          <div className="grid col-2" style={{marginTop:12}}>
-            <div className="card p-6">
-              <div style={{fontWeight:800,marginBottom:6}}>dormakaba</div>
-              <ul className="muted" style={{lineHeight:1.8}}>
-                <li>Access control: mobile credentials, visitor passes, audit trails.</li>
-                <li>Automatic doors: predictive maintenance, uptime alerts, safe evacuation support.</li>
-                <li>Turnstiles & locks: anti‑tailgating, occupancy analytics, remote diagnostics.</li>
-                <li>Systems integration with HVAC, lighting, elevators & CMMS for building‑wide workflows.</li>
-              </ul>
-            </div>
-            <div className="card p-6">
-              <div style={{fontWeight:800,marginBottom:6}}>Carrier Collaboration</div>
-              <ul className="muted" style={{lineHeight:1.8}}>
-                <li>Smart thermostats for adaptive HVAC control.</li>
-                <li>Energy analytics with carbon tracking.</li>
-                <li>IoT sensors + real‑time occupancy → optimized comfort & cost.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section><div className="container"><div className="h2">Integrations</div><p className="subtitle">Vendor‑neutral: BMS, CCTV, access, meters, LoRa, and more.</p></div></section>
     );
-
     const Advantages = () => (
+      <section><div className="container"><div className="h2">Advantages</div><p className="subtitle">Lower labour, lower OPEX, lower energy; privacy‑first and interoperable.</p></div></section>
+    );
+
+    const Projects = () => (
       <section>
         <div className="container">
-          <div className="h2">Competitive Advantages</div>
-          <div className="grid col-3" style={{marginTop:12}}>
-            <Feature title="Modular Architecture" desc="Deploy only what you need; add modules as you grow."/>
-            <Feature title="Cloud / Hybrid / On‑Prem" desc="Flexible deployment with failover."/>
-            <Feature title="Portfolio Management" desc="Enterprise‑grade, multi‑site visibility & control."/>
-            <Feature title="Event Handling" desc="Designed for high‑concurrency scenarios."/>
-            <Feature title="Future‑Proof" desc="Regular enhancements to support new tech & standards."/>
-            <Feature title=">100 Buildings" desc="Airports, malls, hospitals, offices — proven at scale."/>
+          <div className="h2">Project References</div>
+          <p className="muted">A sample of deployments across APAC. Contact us for a walkthrough tailored to your portfolio.</p>
+          <div className="grid col-3" style={{marginTop:16}}>
+            <DeviceCard title="Smart Washroom — Awarded" img="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1600&auto=format&fit=crop">
+              Multi‑site rollouts in Grade‑A malls with live stall occupancy, queue length and SLA cleaning — winner listed on <a href="https://www.sign.com/en/winner-ranking/project/blutech-io-smart-washroom-aiot-solution/617175" target="_blank" rel="noopener">sign.com ↗</a>.
+            </DeviceCard>
+            <DeviceCard title="Airport Terminal" img="https://images.unsplash.com/photo-1480632421891-2299013d7748?q=80&w=1600&auto=format&fit=crop">
+              Occupancy‑aware HVAC, IAQ dashboards and predictive maintenance across concourses; measurable energy savings and comfort KPIs.
+            </DeviceCard>
+            <DeviceCard title="Grade‑A Office Portfolio" img="https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?q=80&w=1600&auto=format&fit=crop">
+              Portfolio energy analytics, benchmark dashboards, and centralized alarm handling; ESG evidence packs for stakeholders.
+            </DeviceCard>
           </div>
         </div>
       </section>
     );
 
-    const Contact = ({logo, onPickLogo}) => (
+    const Contact = () => (
       <section>
         <div className="container">
           <div className="card p-6" style={{background:'linear-gradient(120deg, rgba(96,165,250,.25), rgba(167,139,250,.25))'}}>
@@ -530,13 +498,12 @@
               </div>
             </div>
           </div>
-
           <div className="footer">
             <div className="grid col-3">
               <div>
-                <div className="brand">{logo ? <img src={logo} alt="Blutech.io"/> : <span style={{fontWeight:900}}>blutech.io</span>} Blutech.io</div>
+                <div className="brand"><span className="wordmark" aria-label="bluta"><span className="blu">blu</span><span className="ta">ta</span></span> <span className="muted"
+ style={{marginLeft:8}}>by Blutech.io</span></div>
                 <p className="muted" style={{fontSize:14,marginTop:8}}>Physical AI for smart buildings. BLUTA unifies data and automates operations to cut labour, OPEX and energy.</p>
-                <button className="btn" onClick={onPickLogo} style={{marginTop:8}}>Replace Logo…</button>
               </div>
               <div>
                 <div style={{fontWeight:800}}>Explore</div>
@@ -556,43 +523,26 @@
       </section>
     );
 
-    /** App + Router */
+    const Page = ({route}) => {
+      if(route==='solutions') return <><Nav/><Solutions/><Contact/></>;
+      if(route==='hardware') return <><Nav/><Hardware/><Contact/></>;
+      if(route==='platform') return <><Nav/><Platform/><Contact/></>;
+      if(route==='cctv') return <><Nav/><CCTV/><Contact/></>;
+      if(route==='esg') return <><Nav/><ESG/><Contact/></>;
+      if(route==='partners') return <><Nav/><Partners/><Contact/></>;
+      if(route==='advantages') return <><Nav/><Advantages/><Contact/></>;
+      if(route==='projects') return <><Nav/><Projects/><Contact/></>;
+      if(route==='contact') return <><Nav/><Contact/></>;
+      return <><Nav/><Home/><Contact/></>;
+    };
+
     function App(){
       const route = useHashRoute();
-      const [logo,setLogo] = React.useState(getStoredLogo());
       React.useEffect(()=>{ if(!location.hash) location.hash = '#/home'; }, []);
-      const onPickLogo = ()=>{
-        const inp = document.createElement('input');
-        inp.type = 'file';
-        inp.accept = 'image/*';
-        inp.onchange = (e)=>{
-          const f = e.target.files && e.target.files[0];
-          if(!f) return;
-          const r = new FileReader();
-          r.onload = ()=>{ localStorage.setItem('blutech_logo_data', r.result); setLogo(r.result); };
-          r.readAsDataURL(f);
-        };
-        inp.click();
-      };
-
-      return (
-        <div>
-          <Nav logo={logo} onPickLogo={onPickLogo}/>
-          {route === 'home' && <Home/>}
-          {route === 'solutions' && <Solutions/>}
-          {route === 'platform' && <Platform/>}
-          {route === 'cctv' && <CCTV/>}
-          {route === 'esg' && <ESG/>}
-          {route === 'partners' && <Partners/>}
-          {route === 'advantages' && <Advantages/>}
-          {route === 'contact' && <Contact logo={logo} onPickLogo={onPickLogo}/>}        
-          {!['home','solutions','platform','cctv','esg','partners','advantages','contact'].includes(route) && <Home/>}
-        </div>
-      );
+      return <Page route={route}/>;
     }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App/>);
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
   </script>
 </body>
 </html>
