@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blutech.io — BLUTA | Connect • See • Automate</title>
+  <meta name="description" content="BLUTA by Blutech.io — Building OS + Hardware to reduce labour, operating and energy costs. Multi‑page dark site." />
+  <style>
+    :root{
+      --bg:#0b1020;        /* deep navy */
+      --panel:#121a2e;     /* card surface */
+      --ink:#e5e7eb;       /* text */
+      --muted:#9aa3b2;     /* secondary text */
+      --line:#1f2a44;      /* borders */
+      --brand:#60a5fa;     /* accent */
+      --brand2:#a78bfa;    /* accent 2 */
+      --nav-h:72px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:linear-gradient(180deg,#0a0f1f 0%,#0b1020 18%,#0b1020 100%);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:var(--ink);text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .nav{position:sticky;top:0;z-index:50;height:var(--nav-h);backdrop-filter:saturate(1.2) blur(8px);background:rgba(10,14,28,.7);border-bottom:1px solid var(--line)}
+    .nav-inner{display:flex;gap:16px;align-items:center;justify-content:space-between;height:100%}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:800}
+    .brand img{height:34px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.45))}
+    .nav-links a{display:inline-block;padding:10px 12px;border-radius:10px;font-weight:700;color:#dbe3f3}
+    .nav-links a:hover{background:rgba(255,255,255,.06)}
+    section{padding:64px 0}
+    .hero{padding-top:16px;background:radial-gradient(800px 300px at 30% 0%,rgba(99,102,241,.25),transparent),radial-gradient(900px 340px at 80% 10%,rgba(96,165,250,.2),transparent)}
+    .grid{display:grid;gap:20px}
+    .col-2{grid-template-columns:1fr 1fr}
+    .col-3{grid-template-columns:repeat(3,1fr)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+    .p-6{padding:18px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;font-weight:800;border:1px solid var(--line);background:rgba(255,255,255,.04)}
+    .btn.primary{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#0b1020;border-color:transparent}
+    .subtitle{color:var(--muted);font-size:18px}
+    .title-xl{font-size:clamp(28px,3.6vw,48px);line-height:1.1;margin:10px 0}
+    .h2{font-size:30px;margin:0 0 8px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(96,165,250,.12);color:#c7d2fe;font-weight:800;font-size:12px;border:1px solid var(--line)}
+    .muted{color:var(--muted)}
+    .image{overflow:hidden;border-radius:16px;border:1px solid var(--line);background:#050814}
+    .image img,.image svg{display:block;width:100%;height:100%;object-fit:cover}
+    .specs{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+    .specs td{padding:10px 0;border-bottom:1px solid var(--line)}
+    .specs td:first-child{width:220px;font-weight:700;color:#bfd1ff}
+    .subnav a{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);margin:6px 6px 0 0;font-size:13px}
+    .statcard{display:flex;gap:12px;align-items:center;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02))}
+    .statcard .thumb{width:64px;height:64px;flex:0 0 64px}
+    .footer{border-top:1px solid var(--line);padding:40px 0;color:var(--muted)}
+    input[type=number]{background:transparent;border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:10px}
+    @media(max-width:980px){.col-2,.col-3{grid-template-columns:1fr}}
+  </style>
+  <script>
+    // tiny hash router (hardened)
+    window.__route = function(){
+      var h = (location.hash||'').replace(/^#\/?/, '').trim();
+      return (h ? h : 'home').toLowerCase();
+    };
+    document.addEventListener('click', function(e){
+      var a = e.target && e.target.closest && e.target.closest('a[href^="#/"]');
+      if(a){ e.preventDefault(); location.hash = a.getAttribute('href'); }
+    });
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React via CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    /** Assets */
+    const BLUTA_BADGE = "data:image/svg+xml;utf8,\
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 28'>\
+      <rect width='120' height='28' rx='6' fill='%23121a2e'/>\
+      <text x='10' y='19' font-family='ui-sans-serif, Arial' font-weight='900' font-size='14' fill='%2360a5fa'>BLUTA</text>\
+      </svg>";
+
+    // Logo loader: will persist your uploaded logo in localStorage so it shows reliably in canvas
+    const getStoredLogo = () => localStorage.getItem('blutech_logo_data') || '';
+
+    const NetImage = ({ src, alt, className }) => {
+      const [err,setErr] = React.useState(false);
+      if(err) return (
+        <svg viewBox="0 0 800 600" className={className} role="img" aria-label={alt} preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stopColor="#60a5fa"/><stop offset="1" stopColor="#a78bfa"/></linearGradient></defs>
+          <rect width="800" height="600" fill="url(#g)"/>
+          <text x="50%" y="92%" textAnchor="middle" fill="#0b1020" fontSize="16" fontFamily="ui-sans-serif">Preview image</text>
+        </svg>
+      );
+      return <img src={src} alt={alt} className={className} onError={()=>setErr(true)} />
+    };
+
+    function useHashRoute(){
+      const [route,setRoute] = React.useState(window.__route());
+      React.useEffect(()=>{
+        const onHash = ()=> setRoute(window.__route());
+        window.addEventListener('hashchange', onHash);
+        return ()=> window.removeEventListener('hashchange', onHash);
+      },[]);
+      return route;
+    }
+
+    /** UI **/
+    const Nav = ({logo, onPickLogo}) => (
+      <div className="nav">
+        <div className="container nav-inner">
+          <a href="#/home" className="brand">
+            {logo ? <img src={logo} alt="Blutech.io"/> : <span style={{fontWeight:900,letterSpacing:.4}}>blutech.io</span>}
+          </a>
+          <div className="nav-links">
+            <a href="#/home">Home</a>
+            <a href="#/solutions">Solutions</a>
+            <a href="#/platform">Platform</a>
+            <a href="#/cctv">AI CCTV</a>
+            <a href="#/esg">ESG</a>
+            <a href="#/partners">Integrations</a>
+            <a href="#/advantages">Advantages</a>
+            <a href="#/contact">Contact</a>
+          </div>
+        </div>
+      </div>
+    );
+
+    const StatCard = ({img,value,label})=> (
+      <div className="statcard">
+        <div className="thumb image"><NetImage src={img} alt={label}/></div>
+        <div style={{padding:'8px 12px'}}>
+          <div style={{fontSize:22,fontWeight:900}}>{value}</div>
+          <div className="muted" style={{fontSize:13}}>{label}</div>
+        </div>
+      </div>
+    );
+
+    const Feature = ({title,desc})=> (
+      <div className="card p-6">
+        <div style={{fontWeight:800,marginBottom:6}}>{title}</div>
+        <div className="muted" style={{fontSize:14,lineHeight:1.6}}>{desc}</div>
+      </div>
+    );
+
+    const Sector = ({ title, img, bullets }) => (
+      <div className="card" style={{overflow:'hidden'}}>
+        <div className="image" style={{height:160}}>
+          <NetImage src={img} alt={title} />
+        </div>
+        <div className="p-6">
+          <div style={{fontWeight:700}}>{title}</div>
+          <ul className="muted" style={{margin:'8px 0 0 18px', lineHeight:1.6}}>
+            {bullets.map((b,i)=>(<li key={i}>{b}</li>))}
+          </ul>
+        </div>
+      </div>
+    );
+
+    const DeviceCard = ({title,img,children,specs})=> (
+      <div className="card" style={{overflow:'hidden'}}>
+        <div className="image" style={{height:180}}><NetImage src={img} alt={title}/></div>
+        <div className="p-6">
+          <div style={{fontWeight:800,fontSize:18}}>{title}</div>
+          <div className="muted" style={{marginTop:8}}>{children}</div>
+          {specs && (
+            <table className="specs"><tbody>
+              {specs.map((row,i)=> <tr key={i}><td>{row[0]}</td><td>{row[1]}</td></tr>)}
+            </tbody></table>
+          )}
+        </div>
+      </div>
+    );
+
+    /** Pages **/
+    const Home = () => {
+      const [area,setArea] = React.useState(50000);
+      const [staff,setStaff] = React.useState(8);
+      const [energy,setEnergy] = React.useState(500000);
+      const savings = React.useMemo(()=>{
+        const labour = staff*12*3000*0.35; // 35% labour efficiency mid‑point
+        const energySave = energy*0.17;    // 17% energy mid‑point
+        return {labour:Math.round(labour), energy:Math.round(energySave), total:Math.round(labour+energySave)};
+      },[staff,energy]);
+
+      return (
+        <>
+          {/* HERO */}
+          <section className="hero">
+            <div className="container">
+              <div className="grid col-2" style={{alignItems:'center'}}>
+                <div>
+                  <span className="pill"><img src={BLUTA_BADGE} alt="BLUTA" style={{height:14,borderRadius:3}}/> BLUTA • Building OS</span>
+                  <h1 className="title-xl">Cut Costs. Automate with AI. <br/>One Platform for Smart Buildings.</h1>
+                  <p className="subtitle">Unify CCTV, HVAC, lifts, access and IoT—then automate with privacy‑first AI to cut labour, operating and energy costs.</p>
+                  <div style={{marginTop:16,display:'flex',gap:10,flexWrap:'wrap'}}>
+                    <a className="btn primary" href="#/solutions">See Solutions →</a>
+                    <a className="btn" href="#/platform">How it works</a>
+                  </div>
+                  <div className="grid col-2" style={{marginTop:20}}>
+                    <StatCard img="https://images.unsplash.com/photo-1524758870432-af57e54afa6f?q=80&w=500&auto=format&fit=crop" value="30–50%" label="Labour efficiency"/>
+                    <StatCard img="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=500&auto=format&fit=crop" value="15–20%" label="Energy savings"/>
+                    <StatCard img="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=500&auto=format&fit=crop" value=">100" label="Deployments across APAC"/>
+                    <StatCard img="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=500&auto=format&fit=crop" value="Privacy‑first" label="No personal identifiers"/>
+                  </div>
+                </div>
+                <div className="image" style={{height:360}}>
+                  <NetImage src="https://images.unsplash.com/photo-1482192505345-5655af888cc4?q=80&w=1600&auto=format&fit=crop" alt="Command center"/>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* BLUTA CORE */}
+          <section>
+            <div className="container">
+              <div className="h2">BLUTA — One Platform. Total Control.</div>
+              <p className="muted">Connect, analyze and automate ops across your portfolio. Break silos between BMS, CCTV, HVAC, access control, lifts and IoT.</p>
+              <div className="grid col-2" style={{marginTop:16}}>
+                <div className="grid col-2">
+                  <Feature title="Reduce Labour Cost" desc="Automate patrols, checks, reporting and alerts. Free your team from repetitive tasks."/>
+                  <Feature title="Cut Operating Cost" desc="Unify data and workflows in one OS. Eliminate duplicated systems and licenses."/>
+                  <Feature title="Save Energy" desc="AI optimization for HVAC, lighting and equipment runtime based on occupancy and weather."/>
+                  <Feature title="Actionable Insights" desc="KPIs, anomalies and ROI dashboards for management and on‑ground teams."/>
+                </div>
+                <div className="card p-6">
+                  <div style={{fontWeight:800,marginBottom:8}}>Integrations</div>
+                  <div className="grid col-3">
+                    {['CCTV','HVAC/IAQ','BMS','Energy/Meters','Access/Attendance','IoT/LoRa/IP'].map((t,i)=>(
+                      <div key={i} className="card p-6" style={{padding:12, textAlign:'center'}}>{t}</div>
+                    ))}
+                  </div>
+                  <div className="image" style={{height:160, marginTop:12}}>
+                    <NetImage src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1600&auto=format&fit=crop" alt="Integrations"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SOLUTION TILES */}
+          <section>
+            <div className="container">
+              <div className="h2">Industry Playbooks</div>
+              <p className="muted">Templates, KPIs and automations tailored to your environment.</p>
+              <div className="grid col-3" style={{marginTop:16}}>
+                <Sector title="Commercial Real Estate" img="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop" bullets={["Portfolio‑wide energy optimization","Tenant comfort & IAQ monitoring","Unified alarms and SLA workflows"]}/>
+                <Sector title="Shopping Malls" img="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop" bullets={["People‑flow & queue analytics","Smart washroom staffing","HVAC scheduling by occupancy"]}/>
+                <Sector title="Hospitals & Elderly Care" img="https://images.unsplash.com/photo-1587351020703-4c1d6f95b00b?q=80&w=1200&auto=format&fit=crop" bullets={["Privacy‑safe occupancy signals","Cleaning & disinfection workflows","Alarm fatigue reduction"]}/>
+                <Sector title="Hospitality" img="https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?q=80&w=1200&auto=format&fit=crop" bullets={["Guest comfort automation","Room‑level energy control","Service quality dashboards"]}/>
+                <Sector title="Public Sector & Transport" img="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop" bullets={["Airport & terminal operations","Standardized governance","Energy and maintenance KPIs"]}/>
+                <Sector title="Manufacturing & Logistics" img="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?q=80&w=1200&auto=format&fit=crop" bullets={["Equipment runtime optimization","Warehouse energy savings","Predictive maintenance"]}/>
+              </div>
+            </div>
+          </section>
+
+          {/* HARDWARE PREVIEW */}
+          <section>
+            <div className="container">
+              <div className="h2">Hardware</div>
+              <p className="muted">Privacy‑first devices that stream trustworthy signals into BLUTA.</p>
+              <div className="grid col-2" style={{marginTop:16}}>
+                <DeviceCard title="IAQ Sensor" img="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop"
+                  specs={[["Parameters","CO₂, PM₂.₅/PM₁₀, TVOC, temperature, humidity"],["Connectivity","LoRaWAN / Wi‑Fi / Ethernet"],["Power","PoE or 12–24V DC"],["Mounting","Wall/ceiling"],["Data","MQTT/HTTPS; BACnet via gateway"]]}>
+                  Continuous IAQ for healthier, efficient buildings. Enables DCV and ESG reporting.
+                </DeviceCard>
+                <DeviceCard title="Heatmap Fusion & Pro" img="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop"
+                  specs={[["Privacy","Thermal/mmWave or anonymised edge analytics"],["Coverage","50–120 m² per unit (scene‑dependent)"],["Outputs","Occupancy, dwell, flow, crowding alerts"],["Comms","Ethernet/PoE; optional Wi‑Fi"]]}>
+                  Space utilisation, queue monitoring, fall detection without cameras in sensitive areas.
+                </DeviceCard>
+              </div>
+            </div>
+          </section>
+
+          {/* FEATURE MATRIX */}
+          <section>
+            <div className="container">
+              <div className="h2">Feature Matrix</div>
+              <div className="card p-6" style={{overflowX:'auto'}}>
+                <table className="specs" style={{width:'100%'}}>
+                  <thead>
+                    <tr style={{background:'rgba(255,255,255,.06)'}}>
+                      <td style={{fontWeight:700}}>Capability</td>
+                      <td>Real Estate</td><td>Malls</td><td>Healthcare</td><td>Hospitality</td><td>Public</td><td>Mfg/Logistics</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      {cap:'Occupancy & People‑flow', vals:['✓','✓','✓','✓','✓','•']},
+                      {cap:'HVAC Energy Optimization', vals:['✓','✓','✓','✓','✓','✓']},
+                      {cap:'Smart Washroom', vals:['•','✓','•','•','•','•']},
+                      {cap:'Alarm Unification', vals:['✓','✓','✓','✓','✓','✓']},
+                      {cap:'Cleaning & Workforce', vals:['✓','✓','✓','✓','•','•']},
+                      {cap:'Predictive Maintenance', vals:['✓','•','•','•','•','✓']},
+                      {cap:'ESG / Reporting', vals:['✓','✓','✓','✓','✓','✓']}
+                    ].map((row,i)=> (
+                      <tr key={i} style={{background: i%2 ? 'transparent' : 'rgba(255,255,255,.02)'}}>
+                        <td style={{fontWeight:600}}>{row.cap}</td>
+                        {row.vals.map((v,j)=> (<td key={j} style={{textAlign:'center'}}>{v}</td>))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="muted" style={{fontSize:12, marginTop:6}}>✓ standard • optional module • configurable per site</div>
+            </div>
+          </section>
+
+          {/* ROI */}
+          <section>
+            <div className="container">
+              <div className="h2">ROI Estimator</div>
+              <p className="muted">Quick back‑of‑the‑envelope based on typical results (labour 30–50%, energy 15–20%). Adjust inputs to match your portfolio.</p>
+              <div className="grid col-2" style={{marginTop:12}}>
+                <div className="card p-6">
+                  <div className="grid col-2">
+                    <label>Gross area (sq ft)
+                      <input type="number" value={area} onChange={e=>setArea(Number(e.target.value||0))} style={{width:'100%',marginTop:6}} />
+                    </label>
+                    <label>Ops headcount
+                      <input type="number" value={staff} onChange={e=>setStaff(Number(e.target.value||0))} style={{width:'100%',marginTop:6}} />
+                    </label>
+                    <label style={{gridColumn:'1/-1'}}>Annual energy spend
+                      <input type="number" value={energy} onChange={e=>setEnergy(Number(e.target.value||0))} style={{width:'100%',marginTop:6}} />
+                    </label>
+                  </div>
+                </div>
+                <div className="card p-6" style={{background:'linear-gradient(135deg,#6366f1,#0ea5e9)', color:'white'}}>
+                  <div className="grid col-3" style={{textAlign:'center'}}>
+                    <div><div style={{fontWeight:800,fontSize:22}}>{savings.labour.toLocaleString()}</div><div>Labour / yr</div></div>
+                    <div><div style={{fontWeight:800,fontSize:22}}>{savings.energy.toLocaleString()}</div><div>Energy / yr</div></div>
+                    <div><div style={{fontWeight:800,fontSize:22}}>{savings.total.toLocaleString()}</div><div>Total / yr</div></div>
+                  </div>
+                  <div style={{fontSize:12,opacity:.95,marginTop:10}}>Illustrative only. Results vary by site, tariffs, baseline operations, and scope.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* CTA */}
+          <section>
+            <div className="container">
+              <div className="card p-6" style={{background:'linear-gradient(120deg, rgba(96,165,250,.25), rgba(167,139,250,.25))'}}>
+                <div className="grid col-2" style={{alignItems:'center'}}>
+                  <div>
+                    <div className="h2" style={{margin:0}}>Transform your building operations with BLUTA</div>
+                    <p>Unify data, automate decisions, and cut costs. See a tailored demo for your portfolio.</p>
+                  </div>
+                  <div style={{textAlign:'right'}}>
+                    <a className="btn primary" href="mailto:sales@blutech.io?subject=BLUTA Demo Request">Request a Demo</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </>
+      );
+    };
+
+    const Solutions = () => (
+      <section>
+        <div className="container">
+          <div className="h2">Solutions: Connect • See • Automate</div>
+          <p className="muted">BLUTA is the smart building brain: integrate systems, turn data into insights, and automate action.</p>
+
+          <div className="grid col-3" style={{marginTop:16}}>
+            <Feature title="Connect" desc="HVAC, lighting, security, access control, cleaning, and energy systems unified. Broad sensor compatibility. Open protocols & APIs."/>
+            <Feature title="See" desc="IAQ & comfort tracking; energy analytics; occupancy & people‑flow; safety monitoring incl. fall/leak; AI CCTV intelligence."/>
+            <Feature title="Automate" desc="Rule‑based alerts; auto work orders & escalations; schedule optimization that learns occupancy patterns."/>
+          </div>
+
+          <div className="grid col-2" style={{marginTop:20}}>
+            <div className="card p-6">
+              <div style={{fontWeight:800,marginBottom:6}}>Industry Playbooks</div>
+              <div className="grid col-2">
+                <Feature title="Commercial Real Estate" desc="Portfolio energy optimization; tenant comfort; unified alarms & SLAs."/>
+                <Feature title="Shopping Malls" desc="Queue analytics; smart washrooms; occupancy‑based HVAC."/>
+                <Feature title="Hospitals & Elderly Care" desc="Privacy‑safe occupancy; cleaning & disinfection workflows; alarm fatigue reduction."/>
+                <Feature title="Hospitality" desc="Guest comfort automation; room‑level energy; service dashboards."/>
+              </div>
+            </div>
+            <div className="image" style={{height:340}}>
+              <NetImage src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1600&auto=format&fit=crop" alt="Operations"/>
+            </div>
+          </div>
+
+          <div className="card p-6" style={{marginTop:20}}>
+            <div style={{fontWeight:800,marginBottom:6}}>Results You Can Measure</div>
+            <ul className="muted" style={{lineHeight:1.7}}>
+              <li>Lower OpEx without compromising comfort or safety.</li>
+              <li>Scalable across large portfolios with cloud, hybrid, or on‑prem deployment.</li>
+              <li>Evidence‑based reporting for ESG and stakeholders.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Platform = () => (
+      <section>
+        <div className="container">
+          <div className="h2">Platform: The Smart Building Brain</div>
+          <p className="muted">From ingestion to action — BLUTA’s MCP turns signals into decisions.</p>
+          <div className="grid col-3" style={{marginTop:16}}>
+            <Feature title="Data Ingestion" desc="Sensors, meters, utility bills, BMS, and third‑party platforms."/>
+            <Feature title="Normalization" desc="Standardized metadata & units for clean analytics."/>
+            <Feature title="Rule Engine" desc="Thresholds, patterns & interdependencies trigger actions."/>
+            <Feature title="Task Management" desc="Auto‑create, assign & escalate with notifications."/>
+            <Feature title="Retention" desc="Live trends & scheduled backups for compliance."/>
+          </div>
+
+          <div className="grid col-2" style={{marginTop:20}}>
+            <div className="card p-6">
+              <div style={{fontWeight:800,marginBottom:6}}>MCP Capabilities</div>
+              <ul className="muted" style={{lineHeight:1.7}}>
+                <li><b>Root‑Cause Explainer</b>: e.g., re‑open damper; temp normal in 7 min.</li>
+                <li><b>Auto Work‑Order Creator</b>: drafts WO with parts list (e.g., VFD bearing wear).</li>
+                <li><b>Ghost‑Asset Finder</b>: redeploy idle assets to cut wait times.</li>
+                <li><b>Cross‑Site Benchmarking</b>: spot energy outliers (kWh/ft², COP drift).</li>
+                <li><b>Predict‑&‑Prevent Safety</b>: context‑aware hazard warnings (e.g., slick lobby).</li>
+                <li><b>Tenant AI Chatbot</b>: answers “why warm?” with live cause & ETA.</li>
+              </ul>
+            </div>
+            <div className="image" style={{height:320}}>
+              <NetImage src="https://images.unsplash.com/photo-1538370965046-79c0d6907d47?q=80&w=1600&auto=format&fit=crop" alt="Platform MCP"/>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const CCTV = () => (
+      <section>
+        <div className="container">
+          <div className="h2">AI‑Powered CCTV Monitoring</div>
+          <div className="grid col-2" style={{marginTop:12}}>
+            <div className="card p-6">
+              <ul className="muted" style={{lineHeight:1.8}}>
+                <li><b>Real‑time detections</b>: intrusion, tailgating, loitering, crowding/queue, slip/fall, smoke.</li>
+                <li><b>Occupancy & flow</b>: counts, heatmaps, dwell, unusual motion.</li>
+                <li><b>Anomaly & tamper</b>: camera offline, scene change, lens cover; auto‑failover.</li>
+                <li><b>Integrations</b>: ONVIF/RTSP VMS, access control, BMS, IoT alarms; export clips & timelines.</li>
+                <li><b>Performance</b>: &lt; 2s event latency*, 24/7 with 99.9% availability target.</li>
+              </ul>
+            </div>
+            <div className="image" style={{height:320}}>
+              <NetImage src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?q=80&w=1600&auto=format&fit=crop" alt="AI CCTV"/>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const ESG = () => (
+      <section>
+        <div className="container">
+          <div className="h2">ESG Compliance & Reporting</div>
+          <div className="grid col-2" style={{marginTop:12}}>
+            <div className="card p-6">
+              <ul className="muted" style={{lineHeight:1.8}}>
+                <li>Aggregate ESG data from disconnected systems into audit‑ready dashboards.</li>
+                <li>Support environmental, safety & transparency standards with evidence packs.</li>
+                <li>Maintain logs & reports for regulators and investors; portfolio‑level insights.</li>
+              </ul>
+            </div>
+            <div className="image" style={{height:320}}>
+              <NetImage src="https://images.unsplash.com/photo-1581092334020-1e7e622d7a4c?q=80&w=1600&auto=format&fit=crop" alt="ESG Reporting"/>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Partners = () => (
+      <section>
+        <div className="container">
+          <div className="h2">Integrations & Partnerships</div>
+          <p className="muted">Out‑of‑the‑box integrations with access control, doors/turnstiles, HVAC and more.</p>
+          <div className="grid col-2" style={{marginTop:12}}>
+            <div className="card p-6">
+              <div style={{fontWeight:800,marginBottom:6}}>dormakaba</div>
+              <ul className="muted" style={{lineHeight:1.8}}>
+                <li>Access control: mobile credentials, visitor passes, audit trails.</li>
+                <li>Automatic doors: predictive maintenance, uptime alerts, safe evacuation support.</li>
+                <li>Turnstiles & locks: anti‑tailgating, occupancy analytics, remote diagnostics.</li>
+                <li>Systems integration with HVAC, lighting, elevators & CMMS for building‑wide workflows.</li>
+              </ul>
+            </div>
+            <div className="card p-6">
+              <div style={{fontWeight:800,marginBottom:6}}>Carrier Collaboration</div>
+              <ul className="muted" style={{lineHeight:1.8}}>
+                <li>Smart thermostats for adaptive HVAC control.</li>
+                <li>Energy analytics with carbon tracking.</li>
+                <li>IoT sensors + real‑time occupancy → optimized comfort & cost.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Advantages = () => (
+      <section>
+        <div className="container">
+          <div className="h2">Competitive Advantages</div>
+          <div className="grid col-3" style={{marginTop:12}}>
+            <Feature title="Modular Architecture" desc="Deploy only what you need; add modules as you grow."/>
+            <Feature title="Cloud / Hybrid / On‑Prem" desc="Flexible deployment with failover."/>
+            <Feature title="Portfolio Management" desc="Enterprise‑grade, multi‑site visibility & control."/>
+            <Feature title="Event Handling" desc="Designed for high‑concurrency scenarios."/>
+            <Feature title="Future‑Proof" desc="Regular enhancements to support new tech & standards."/>
+            <Feature title=">100 Buildings" desc="Airports, malls, hospitals, offices — proven at scale."/>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Contact = ({logo, onPickLogo}) => (
+      <section>
+        <div className="container">
+          <div className="card p-6" style={{background:'linear-gradient(120deg, rgba(96,165,250,.25), rgba(167,139,250,.25))'}}>
+            <div className="grid col-2" style={{alignItems:'center'}}>
+              <div>
+                <div className="h2" style={{margin:0}}>See BLUTA in action</div>
+                <p className="muted">Get a tailored walkthrough for your site or portfolio.</p>
+              </div>
+              <div style={{textAlign:'right'}}>
+                <a className="btn primary" href="mailto:sales@blutech.io?subject=BLUTA Demo Request">Request a Demo</a>
+              </div>
+            </div>
+          </div>
+
+          <div className="footer">
+            <div className="grid col-3">
+              <div>
+                <div className="brand">{logo ? <img src={logo} alt="Blutech.io"/> : <span style={{fontWeight:900}}>blutech.io</span>} Blutech.io</div>
+                <p className="muted" style={{fontSize:14,marginTop:8}}>Physical AI for smart buildings. BLUTA unifies data and automates operations to cut labour, OPEX and energy.</p>
+                <button className="btn" onClick={onPickLogo} style={{marginTop:8}}>Replace Logo…</button>
+              </div>
+              <div>
+                <div style={{fontWeight:800}}>Explore</div>
+                <div><a href="#/solutions" className="muted">Solutions</a></div>
+                <div><a href="#/platform" className="muted">Platform</a></div>
+                <div><a href="#/cctv" className="muted">AI CCTV</a></div>
+                <div><a href="#/esg" className="muted">ESG</a></div>
+              </div>
+              <div>
+                <div style={{fontWeight:800}}>Contact</div>
+                <div><a href="mailto:sales@blutech.io" className="muted">sales@blutech.io</a></div>
+                <div className="muted">© {new Date().getFullYear()} Blutech IoT Limited</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    /** App + Router */
+    function App(){
+      const route = useHashRoute();
+      const [logo,setLogo] = React.useState(getStoredLogo());
+      React.useEffect(()=>{ if(!location.hash) location.hash = '#/home'; }, []);
+      const onPickLogo = ()=>{
+        const inp = document.createElement('input');
+        inp.type = 'file';
+        inp.accept = 'image/*';
+        inp.onchange = (e)=>{
+          const f = e.target.files && e.target.files[0];
+          if(!f) return;
+          const r = new FileReader();
+          r.onload = ()=>{ localStorage.setItem('blutech_logo_data', r.result); setLogo(r.result); };
+          r.readAsDataURL(f);
+        };
+        inp.click();
+      };
+
+      return (
+        <div>
+          <Nav logo={logo} onPickLogo={onPickLogo}/>
+          {route === 'home' && <Home/>}
+          {route === 'solutions' && <Solutions/>}
+          {route === 'platform' && <Platform/>}
+          {route === 'cctv' && <CCTV/>}
+          {route === 'esg' && <ESG/>}
+          {route === 'partners' && <Partners/>}
+          {route === 'advantages' && <Advantages/>}
+          {route === 'contact' && <Contact logo={logo} onPickLogo={onPickLogo}/>}        
+          {!['home','solutions','platform','cctv','esg','partners','advantages','contact'].includes(route) && <Home/>}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App/>);
+  </script>
+</body>
+</html>
